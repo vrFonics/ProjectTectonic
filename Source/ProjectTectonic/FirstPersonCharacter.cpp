@@ -23,12 +23,17 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 	
 	ViewArrowPitchRotation = 0.0f;
-
+	
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
-
+	
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 	
 	bIsSprinting = false;
+
+	if (LookSensitivity == 0)
+	{
+		LookSensitivity = 1.0f;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -70,7 +75,6 @@ void AFirstPersonCharacter::ToggleCrouch()
 	{
 		UnCrouch();
 		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::SanitizeFloat(BaseEyeHeight));
-
 	}
 	else
 	{
