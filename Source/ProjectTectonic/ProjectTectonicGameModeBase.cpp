@@ -3,3 +3,7 @@
 
 #include "ProjectTectonicGameModeBase.h"
 
+APawn* AProjectTectonicGameModeBase::SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot)
+{
+	return nullptr;
+}

@@ -26,7 +26,13 @@ protected:
 	void RotateX(float AxisValue);
 	void RotateY(float AxisValue);
 
+	void DoJump();
+	void ToggleCrouch();
+	void Sprint();
+
 	float ViewArrowPitchRotation;
+
+	bool bIsSprinting;
 
 public:	
 	// Called every frame
