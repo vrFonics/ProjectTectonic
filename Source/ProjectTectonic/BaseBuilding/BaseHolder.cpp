@@ -14,7 +14,7 @@ ABaseHolder::ABaseHolder()
 void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location)
 {
 	*BaseComponentMap->Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, Location * ComponentSize, FRotator(0, 0, 0));
-	BaseComponentMap->FindRef(Location).ParentHolder = this;
+	BaseComponentMap->FindRef(Location)->UpdateNeighbors(BaseComponentMap);
 }
 
 // Called when the game starts or when spawned
@@ -43,13 +43,15 @@ void ABaseHolder::GenerateGridPointsAroundComponent(ABaseComponent_Parent* Compo
 void ABaseHolder::GeneratePointIfNonExistent(FVector Location)
 {
 	bool PointAlreadyExists = false;
-	for (FVector GridPointLocation : BaseComponentMap->GetKeys)
+	
+	//TODO fix syntax problems
+	/*for (FVector GridPointLocation : BaseComponentMap->GetKeys)
 	{
 		if (Location == GridPointLocation)
 		{
 			PointAlreadyExists = true;
 		}
-	}
+	}*/
 	if (!PointAlreadyExists)
 	{
 		BaseComponentMap->Add(Location, nullptr);

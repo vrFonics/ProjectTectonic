@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseHolder.h"
 #include "GameFramework/Actor.h"
 #include "BaseComponent_Parent.generated.h"
 
@@ -20,8 +19,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void UpdateNeighbors();
-
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* BaseComponentMeshComponent;
 
@@ -31,10 +28,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	void UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*>* MapOfComponents);
+	
 	bool bHasBaseMesh;
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* BaseComponentMesh;
-
-	ABaseHolder* ParentHolder;
 };

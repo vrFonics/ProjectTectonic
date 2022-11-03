@@ -16,7 +16,6 @@ ABaseComponent_Parent::ABaseComponent_Parent()
 void ABaseComponent_Parent::BeginPlay()
 {
 	Super::BeginPlay();
-	UpdateNeighbors();
 	if (!bHasBaseMesh)
 	{
 		return;
@@ -29,10 +28,9 @@ void ABaseComponent_Parent::BeginPlay()
 	BaseComponentMeshComponent->SetStaticMesh(BaseComponentMesh);
 }
 
-void ABaseComponent_Parent::UpdateNeighbors()
+void ABaseComponent_Parent::UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*>* MapOfComponents)
 {
-	FVector GridLocation = ParentHolder->GetBaseComponentMap()->FindKey(this);
-	
+	FVector GridLocation = *MapOfComponents->FindKey(this);
 }
 
 // Called every frame
