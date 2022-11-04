@@ -7,7 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseHolder.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class PROJECTTECTONIC_API ABaseHolder : public AActor
 {
 	GENERATED_BODY()
@@ -16,8 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	ABaseHolder();
 
+	UFUNCTION(BlueprintCallable, Category="Basebuilding")
 	void AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location);
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,4 +46,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float ComponentSize;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString BaseName;
 };

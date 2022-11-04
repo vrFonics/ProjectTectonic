@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseComponent_Parent.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class PROJECTTECTONIC_API ABaseComponent_Parent : public AActor
 {
 	GENERATED_BODY()

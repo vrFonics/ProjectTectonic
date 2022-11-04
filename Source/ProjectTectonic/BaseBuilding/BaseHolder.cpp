@@ -8,13 +8,18 @@ ABaseHolder::ABaseHolder()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-    
 }
 
 void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location)
 {
+	if (BaseComponentMap.FindRef(Location) != nullptr)
+	{
+		return;
+	}
 	*BaseComponentMap.Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, Location * ComponentSize, FRotator(0, 0, 0));
 	BaseComponentMap.FindRef(Location)->UpdateNeighbors(BaseComponentMap);
+	GenerateGridPointsAroundGridPoint(Location);
+	CreateDebugActorsAtEmptyGridSpaces();
 }
 
 // Called when the game starts or when spawned
@@ -24,6 +29,11 @@ void ABaseHolder::BeginPlay()
 	BaseComponentMap.Add(FVector(0, 0, 0), nullptr);
 	GenerateGridPointsAroundGridPoint(FVector (0, 0, 0));
 	CreateDebugActorsAtEmptyGridSpaces();
+
+	if (BaseName == "")
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("BaseHolder has no BaseName. Please ensure it has a name and that all BaseHolders in the world have a unique name to ensure Developer Basebuilding Menu will properly function."));
+	}
 }
 
 void ABaseHolder::GenerateGridPointsAroundGridPoint(FVector Location)
