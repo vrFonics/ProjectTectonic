@@ -22,12 +22,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	void GenerateGridPointsAroundComponent(ABaseComponent_Parent* Component);
+	void GenerateGridPointsAroundGridPoint(FVector Location);
 	void GeneratePointIfNonExistent(FVector Location);
+
+	//DEVELOPER ONLY - TESTING PURPOSES
+	void CreateDebugActorsAtEmptyGridSpaces();
 	
-	TMap<FVector, ABaseComponent_Parent*>* BaseComponentMap;
+	TMap<FVector, ABaseComponent_Parent*> BaseComponentMap;
 
 	FVector* TestVector;
+
+	TArray<AActor*> DebugObjects;
 	
 public:	
 	// Called every frame
@@ -35,5 +40,9 @@ public:
 
 	TMap<FVector, ABaseComponent_Parent*>* GetBaseComponentMap();
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> DebugObjectClass;
+
+	UPROPERTY(EditAnywhere)
 	float ComponentSize;
 };

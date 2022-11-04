@@ -28,7 +28,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*>* MapOfComponents);
+	void UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*> MapOfComponents);
 	
 	bool bHasBaseMesh;
 	

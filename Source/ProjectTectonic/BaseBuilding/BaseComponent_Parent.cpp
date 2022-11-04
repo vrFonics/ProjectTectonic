@@ -28,9 +28,9 @@ void ABaseComponent_Parent::BeginPlay()
 	BaseComponentMeshComponent->SetStaticMesh(BaseComponentMesh);
 }
 
-void ABaseComponent_Parent::UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*>* MapOfComponents)
+void ABaseComponent_Parent::UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*> MapOfComponents)
 {
-	FVector GridLocation = *MapOfComponents->FindKey(this);
+	FVector GridLocation = *MapOfComponents.FindKey(this);
 }
 
 // Called every frame

@@ -116,6 +116,6 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	InputComponent->BindAction("Sprint", IE_Released, this, &AFirstPersonCharacter::Sprint);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &AFirstPersonCharacter::DoJump);
 	InputComponent->BindAction("Crouch", IE_Pressed, this, &AFirstPersonCharacter::ToggleCrouch);
-
+	InputComponent->BindAction("Crouch", IE_Released, this, &AFirstPersonCharacter::ToggleCrouch);
 }
 
