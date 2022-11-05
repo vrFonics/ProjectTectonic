@@ -31,6 +31,32 @@ void ABaseComponent_Parent::BeginPlay()
 void ABaseComponent_Parent::UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*> MapOfComponents)
 {
 	FVector GridLocation = *MapOfComponents.FindKey(this);
+	NeighborsMap.Empty();
+	FVector NeighborLocations [6] = {
+		GridLocation + FVector(1, 0, 0),
+		GridLocation + FVector(-1, 0, 0),
+		GridLocation + FVector(0, 1, 0),
+		GridLocation + FVector(0, -1, 0),
+		GridLocation + FVector(0, 0, 1),
+		GridLocation + FVector(0, 0, -1)
+	};
+	for (FVector Location : NeighborLocations)
+	{
+		if (MapOfComponents.Contains(Location))
+		{
+			NeighborsMap.Add(Location, MapOfComponents.FindRef(Location));
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Neighbor Location not in supplied TMap. Grid points may have failed to properly generate."));
+		}
+	}
+	UpdateDynamicMesh();
+}
+
+void ABaseComponent_Parent::UpdateDynamicMesh_Implementation()
+{
+	
 }
 
 // Called every frame

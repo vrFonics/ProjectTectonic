@@ -14,13 +14,20 @@ ABaseHolder::ABaseHolder()
 
 void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location)
 {
-	if (BaseComponentMap.FindRef(Location) != nullptr)
+	if (BaseComponentMap.FindRef(Location) != nullptr || !BaseComponentMap.Contains(Location))
 	{
 		return;
 	}
 	*BaseComponentMap.Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, GetActorLocation() + (Location * ComponentSize), FRotator(0, 0, 0));
-	BaseComponentMap.FindRef(Location)->UpdateNeighbors(BaseComponentMap);
 	GenerateGridPointsAroundGridPoint(Location);
+	BaseComponentMap.FindRef(Location)->UpdateNeighbors(BaseComponentMap);
+	for (auto& Component : BaseComponentMap.FindRef(Location)->NeighborsMap)
+	{
+		if (Component.Value != nullptr)
+		{
+			Component.Value->UpdateNeighbors(BaseComponentMap);
+		}
+	}
 	//CreateDebugActorsAtEmptyGridSpaces();
 }
 

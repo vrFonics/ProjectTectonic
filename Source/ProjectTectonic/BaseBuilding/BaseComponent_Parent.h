@@ -22,15 +22,18 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* BaseComponentMeshComponent;
 
-	TMap<FVector, TSubclassOf<ABaseComponent_Parent>>* NeighborsMap;
-	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
 	void UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*> MapOfComponents);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void UpdateDynamicMesh();
 	
 	bool bHasBaseMesh;
+
+	UPROPERTY(BlueprintReadOnly)
+	TMap<FVector, ABaseComponent_Parent*> NeighborsMap;
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* BaseComponentMesh;
