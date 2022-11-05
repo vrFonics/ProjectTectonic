@@ -3,6 +3,8 @@
 
 #include "BaseHolder.h"
 
+#include "BaseComponents/BaseComponent_CoreComponent.h"
+
 // Sets default values
 ABaseHolder::ABaseHolder()
 {
@@ -16,19 +18,44 @@ void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> Comp
 	{
 		return;
 	}
-	*BaseComponentMap.Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, Location * ComponentSize, FRotator(0, 0, 0));
+	*BaseComponentMap.Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, GetActorLocation() + (Location * ComponentSize), FRotator(0, 0, 0));
 	BaseComponentMap.FindRef(Location)->UpdateNeighbors(BaseComponentMap);
 	GenerateGridPointsAroundGridPoint(Location);
-	CreateDebugActorsAtEmptyGridSpaces();
+	//CreateDebugActorsAtEmptyGridSpaces();
+}
+
+void ABaseHolder::RemoveComponentAtLocation(FVector Location)
+{
+	ABaseComponent_Parent* ComponentToDestroy = BaseComponentMap.FindRef(Location);
+	if (ComponentToDestroy == nullptr)
+	{
+		return;
+	}
+	ComponentToDestroy->Destroy();
+	*BaseComponentMap.Find(Location) = nullptr;
+	TArray<FVector> Keys;
+	BaseComponentMap.GetKeys(Keys);
+	for (FVector GridPointLocation : Keys)
+	{
+		if (BaseComponentMap.FindRef(GridPointLocation) != nullptr)
+		{
+			GenerateGridPointsAroundGridPoint(GridPointLocation);
+		}
+	}
+}
+
+FVector ABaseHolder::GetLocationAdjacentToComponent(ABaseComponent_Parent* BaseComponent, FVector Direction)
+{
+	return *BaseComponentMap.FindKey(BaseComponent) + Direction;
 }
 
 // Called when the game starts or when spawned
 void ABaseHolder::BeginPlay()
 {
 	Super::BeginPlay();
-	BaseComponentMap.Add(FVector(0, 0, 0), nullptr);
+	BaseComponentMap.Add(FVector(0, 0, 0), GetWorld()->SpawnActor<ABaseComponent_Parent>(ABaseComponent_CoreComponent::StaticClass(), this->GetActorLocation(), FRotator(0, 0, 0)));
 	GenerateGridPointsAroundGridPoint(FVector (0, 0, 0));
-	CreateDebugActorsAtEmptyGridSpaces();
+	//CreateDebugActorsAtEmptyGridSpaces();
 
 	if (BaseName == "")
 	{
@@ -55,7 +82,6 @@ void ABaseHolder::GeneratePointIfNonExistent(FVector Location)
 {
 	bool PointAlreadyExists = false;
 	
-	//TODO fix syntax problems
 	TArray<FVector> Keys;
 	BaseComponentMap.GetKeys(Keys);
 	for (FVector GridPointLocation : Keys)
@@ -86,7 +112,6 @@ void ABaseHolder::CreateDebugActorsAtEmptyGridSpaces()
 			DebugObjects.Add(GetWorld()->SpawnActor<AActor>(DebugObjectClass, GetActorLocation() + (MapElement.Key * ComponentSize), FRotator(0, 0, 0)));
 		}
 	}
-	
 }
 
 // Called every frame

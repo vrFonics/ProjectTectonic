@@ -15,10 +15,7 @@ class PROJECTTECTONIC_API ABaseHolder : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABaseHolder();
-
-	UFUNCTION(BlueprintCallable, Category="Basebuilding")
-	void AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location);
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,6 +35,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable, Category="Basebuilding")
+	void AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location);
+	UFUNCTION(BlueprintCallable, Category="Basebuilding")
+	void RemoveComponentAtLocation(FVector Location);
+
+	UFUNCTION(BlueprintCallable, Category="Basebuilding")
+	FVector GetLocationAdjacentToComponent(ABaseComponent_Parent* BaseComponent, FVector Direction);
 
 	TMap<FVector, ABaseComponent_Parent*>* GetBaseComponentMap();
 

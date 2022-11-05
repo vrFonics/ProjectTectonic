@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseBuilding/BaseHolder.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "FirstPersonCharacter.generated.h"
@@ -41,7 +42,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
     UArrowComponent* ViewArrow;
 
 	UPROPERTY(EditAnywhere)
@@ -49,4 +50,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float LookSensitivity;
+
+	UPROPERTY(EditAnywhere, BLueprintReadWrite)
+	ABaseHolder* ActiveBase;
 };
