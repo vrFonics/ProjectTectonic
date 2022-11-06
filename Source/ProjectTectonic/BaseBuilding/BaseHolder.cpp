@@ -14,8 +14,13 @@ ABaseHolder::ABaseHolder()
 
 void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> ComponentClass, FVector Location)
 {
-	if (BaseComponentMap.FindRef(Location) != nullptr || !BaseComponentMap.Contains(Location))
+	if (BaseComponentMap.FindRef(Location) != nullptr)
 	{
+		return;
+	}
+	if (!BaseComponentMap.Contains(Location))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("BaseComponentMap does not contain") + Location.ToString());
 		return;
 	}
 	*BaseComponentMap.Find(Location) = GetWorld()->SpawnActor<ABaseComponent_Parent>(ComponentClass, GetActorLocation() + (Location * ComponentSize), FRotator(0, 0, 0));
@@ -28,7 +33,7 @@ void ABaseHolder::AddComponentAtLocation(TSubclassOf<ABaseComponent_Parent> Comp
 			Component.Value->UpdateNeighbors(BaseComponentMap);
 		}
 	}
-	//CreateDebugActorsAtEmptyGridSpaces();
+	CreateDebugActorsAtEmptyGridSpaces();
 }
 
 void ABaseHolder::RemoveComponentAtLocation(FVector Location)
@@ -38,8 +43,24 @@ void ABaseHolder::RemoveComponentAtLocation(FVector Location)
 	{
 		return;
 	}
+	auto& ComponentNeighbors = ComponentToDestroy->NeighborsMap;
 	ComponentToDestroy->Destroy();
 	*BaseComponentMap.Find(Location) = nullptr;
+
+	for (auto& Element : ComponentNeighbors)
+	{
+		if (BaseComponentMap.Contains(Element.Key + Location) && BaseComponentMap.FindRef(Element.Key + Location) != nullptr)
+		{
+			if (Element.Value != nullptr)
+			{
+				Element.Value->UpdateNeighbors(BaseComponentMap);
+			}
+			GenerateGridPointsAroundGridPoint(Element.Key + Location);
+		}
+	}
+
+	//Deprecated, loops through all elements in map to regenerate grid points. Was used before components kept track of their own neighbors.
+	/*
 	TArray<FVector> Keys;
 	BaseComponentMap.GetKeys(Keys);
 	for (FVector GridPointLocation : Keys)
@@ -48,7 +69,7 @@ void ABaseHolder::RemoveComponentAtLocation(FVector Location)
 		{
 			GenerateGridPointsAroundGridPoint(GridPointLocation);
 		}
-	}
+	}*/
 }
 
 FVector ABaseHolder::GetLocationAdjacentToComponent(ABaseComponent_Parent* BaseComponent, FVector Direction)
@@ -62,7 +83,7 @@ void ABaseHolder::BeginPlay()
 	Super::BeginPlay();
 	BaseComponentMap.Add(FVector(0, 0, 0), GetWorld()->SpawnActor<ABaseComponent_Parent>(ABaseComponent_CoreComponent::StaticClass(), this->GetActorLocation(), FRotator(0, 0, 0)));
 	GenerateGridPointsAroundGridPoint(FVector (0, 0, 0));
-	//CreateDebugActorsAtEmptyGridSpaces();
+	CreateDebugActorsAtEmptyGridSpaces();
 
 	if (BaseName == "")
 	{
@@ -87,25 +108,18 @@ void ABaseHolder::GenerateGridPointsAroundGridPoint(FVector Location)
 
 void ABaseHolder::GeneratePointIfNonExistent(FVector Location)
 {
-	bool PointAlreadyExists = false;
-	
-	TArray<FVector> Keys;
-	BaseComponentMap.GetKeys(Keys);
-	for (FVector GridPointLocation : Keys)
-	{
-		if (Location == GridPointLocation)
-		{
-			PointAlreadyExists = true;
-		}
-	}
-	if (!PointAlreadyExists)
+	if (!BaseComponentMap.Contains(Location))
 	{
 		BaseComponentMap.Add(Location, nullptr);
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Location.ToString());
 	}
 }
 
 void ABaseHolder::CreateDebugActorsAtEmptyGridSpaces()
 {
+	//Extremely bad performance and needs rewrite
+	return;
+	/*
 	for (AActor* Actor : DebugObjects)
 	{
 		DebugObjects.Remove(Actor);
@@ -119,6 +133,7 @@ void ABaseHolder::CreateDebugActorsAtEmptyGridSpaces()
 			DebugObjects.Add(GetWorld()->SpawnActor<AActor>(DebugObjectClass, GetActorLocation() + (MapElement.Key * ComponentSize), FRotator(0, 0, 0)));
 		}
 	}
+	*/
 }
 
 // Called every frame
