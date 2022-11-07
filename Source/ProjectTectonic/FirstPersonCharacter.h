@@ -19,20 +19,30 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
+	UFUNCTION()
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
 	void MoveX(float AxisValue);
+	UFUNCTION()
 	void MoveY(float AxisValue);
 
+	UFUNCTION()
 	void RotateX(float AxisValue);
+	UFUNCTION()
 	void RotateY(float AxisValue);
 
+	UFUNCTION()
 	void DoJump();
+	UFUNCTION()
 	void ToggleCrouch();
+	UFUNCTION()
 	void Sprint();
 
+	UPROPERTY()
 	float ViewArrowPitchRotation;
 
+	UPROPERTY()
 	bool bIsSprinting;
 
 public:	

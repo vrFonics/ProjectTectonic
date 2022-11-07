@@ -6,6 +6,6 @@
 /NAME:"UnrealEditor-RiderLogging-0002.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
-"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Default.rc2.res"
-/OUT:"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\UnrealEditor-RiderLogging-0002.lib"
+"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Module.RiderLogging.cpp.obj"
+"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\Default.rc2.res"
+/OUT:"C:\Users\Caleb\Documents\Unreal Projects\ProjectTectonic\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLogging\UnrealEditor-RiderLogging-0002.lib"

@@ -13,7 +13,8 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+	//Creates view arrow + camera and parents camera to view arrow
 	ViewArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("ViewArrow"));
 	ViewArrow->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ViewArrow->SetRelativeLocation(FVector(0, 0, GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight() * 0.75));
@@ -59,6 +60,7 @@ void AFirstPersonCharacter::RotateX(float AxisValue)
 
 void AFirstPersonCharacter::RotateY(float AxisValue)
 {
+	//Rotate view pitch, clamping angle between -89.9 and 89.9 degrees
 	ViewArrowPitchRotation += AxisValue * LookSensitivity;
 	ViewArrowPitchRotation = UKismetMathLibrary::ClampAngle(ViewArrowPitchRotation, -89.9, 89.9);
 	ViewArrow->SetRelativeRotation(FRotator(ViewArrowPitchRotation, ViewArrow->GetRelativeRotation().Yaw, ViewArrow->GetRelativeRotation().Roll));
@@ -85,6 +87,7 @@ void AFirstPersonCharacter::ToggleCrouch()
 
 void AFirstPersonCharacter::Sprint()
 {
+	//Toggles sprinting
 	if (bIsSprinting)
 	{
 		bIsSprinting = false;
