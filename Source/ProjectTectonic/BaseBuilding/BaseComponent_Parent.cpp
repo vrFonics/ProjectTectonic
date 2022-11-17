@@ -14,19 +14,10 @@ ABaseComponent_Parent::ABaseComponent_Parent()
 	//Creates an arrow to use as the root component
 	RootArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow Root"));
 	RootArrow->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	
+	BaseComponentMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseComponentMesh"));
+	BaseComponentMeshComponent->AttachToComponent(RootArrow, FAttachmentTransformRules::KeepRelativeTransform);
 
-	//Creates a mesh component only if this component has a base mesh
-	if (bHasBaseMesh)
-	{
-		BaseComponentMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseComponentMesh"));
-		BaseComponentMeshComponent->AttachToComponent(RootArrow, FAttachmentTransformRules::KeepRelativeTransform);
-	}
-
-	//Doesn't attempt load of datatable asset if this component does not have a dynamic mesh
-	if (!bHasDynamicMesh)
-	{
-		return;
-	}
 	//Finds the data table for dynamic mesh arrangements and loads it for use in updating the mesh.
 	const FSoftObjectPath DynamicMeshDataTablePath("DataTable'/Game/DataTables/DT_MeshArrangements.DT_MeshArrangements'");
 	DynamicMeshDataTable = Cast<UDataTable>(DynamicMeshDataTablePath.TryLoad());
@@ -49,7 +40,7 @@ void ABaseComponent_Parent::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("No Mesh Assigned for BaseComponentMesh. If this Base Component does not have a Base Mesh please ensure bHasBaseMesh is set to false."));
 		return;
 	}
-	//BaseComponentMeshComponent->SetStaticMesh(BaseComponentMesh);
+	BaseComponentMeshComponent->SetStaticMesh(BaseComponentMesh);
 }
 
 void ABaseComponent_Parent::UpdateNeighbors(TMap<FVector, ABaseComponent_Parent*> MapOfComponents)

@@ -23,6 +23,15 @@ void UAC_BaseBuildingTool::BeginPlay()
 	
 }
 
+void UAC_BaseBuildingTool::CreatePortableComponentHologram()
+{
+	
+}
+
+void UAC_BaseBuildingTool::CreateBaseComponentHologram()
+{
+	
+}
 
 // Called every frame
 void UAC_BaseBuildingTool::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -30,5 +39,18 @@ void UAC_BaseBuildingTool::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UAC_BaseBuildingTool::ToggleToolActive()
+{
+	if (bToolActivated)
+	{
+		bToolActivated = false;
+		return;
+	}
+	else
+	{
+		bToolActivated = true;
+	}
 }
 
